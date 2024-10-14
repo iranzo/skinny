@@ -7,6 +7,8 @@ IMAGE="quay.io/centos-bootc/bootc-image-builder:latest"
 
 IMAGE="registry.redhat.io/rhel9/bootc-image-builder:latest"
 
+IMAGE=ghcr.io/mvo5/bootc-image-builder:bib-pr669
+
 # We use CentOS builder as the one in RHEL is missing the --rootfs parameter that
 # we need to set the system to ext4 until we've a way to specify the disk size
 

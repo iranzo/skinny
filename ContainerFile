@@ -2,8 +2,7 @@
 
 FROM registry.redhat.io/rhel9/rhel-bootc:latest
 
-ARG EXTRA_RPM_PACKAGES='pciutils tmux joe bootc ostree openssh-server firefox gnome-kiosk gnome-kiosk-search-appliance gdm xorg-x11-drivers xorg-x11-fonts-75dpi xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-xinit xorg-x11-xinit-session xorg-x11-server-Xwayland' # cloud-init
-# weston
+ARG EXTRA_RPM_PACKAGES='pciutils tmux joe bootc ostree openssh-server firefox gnome-kiosk gnome-kiosk-search-appliance gdm xorg-x11-drivers xorg-x11-fonts-75dpi xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-xinit xorg-x11-xinit-session xorg-x11-server-Xwayland weston' # cloud-init
 ARG REMOVE_RPM_PACKAGES='adcli avahi-libs flashrom flatpak* fwupd gdisk libsmbclient libudisks2 nano ncurses netavark nfs-utils pipewire rpcbind samba-client-libs samba-common-libs sg3_utils skopeo sos sssd-ad sssd-common sssd-common-pac sssd-ipa sssd-krb5 sssd-krb5-common sssd-ldap sssd-nfs-idmap toolbox tracker tracker-miners udisks2 WALinuxAgent-udev wireplumber zstd'
 
 # xorg-x11-server-Xwayland
@@ -14,6 +13,9 @@ RUN dnf remove -y ${REMOVE_RPM_PACKAGES}
 
 # Enable EPEL
 RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+
+# Enable Chrome
+RUN dnf -y install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
 RUN dnf autoremove -y
 
@@ -37,7 +39,11 @@ RUN systemctl disable rhsmcertd
 ADD config/gdm-custom.conf /etc/gdm/custom.conf
 
 # DMRC was used in prior GNOME versions, use new path
-ADD config/dmrc /var/lib/AccountsService/users/root
+ADD config/dmrc /var/lib/AccountsService/users/user
+
+RUN mkdir -p /home/user/.config/
+
+ADD config/weston.ini /home/user/.config/weston.ini
 
 
 # Setup /usr/lib/containers/storage as an additional store for images.
