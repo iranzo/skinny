@@ -7,6 +7,7 @@ autopart --type=plain --fstype=ext4 --nohome
 network --bootproto=dhcp --device=link --activate --onboot=on
 rootpw --plaintext linux123
 user --name=user --password=password --plaintext
+xconfig --startxonboot
 # reboot
 
 %post --log=/root/ks-post-grubcfg.log --interpreter=/bin/bash
@@ -77,3 +78,15 @@ fi
 #end raw
 %end
 """
+
+
+%post --log=/root/ks-post-services.log --interpreter=/bin/bash
+
+# Disable services
+for service in   pipewire.service pipewire.socket pipewire-pulse.service pipewire-pulse.socket colord.service wireplumber.service; do
+    systemctl --global disable ${service}
+    systemctl --global mask ${service}
+done
+
+
+%end

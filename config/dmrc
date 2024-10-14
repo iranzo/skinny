@@ -1,3 +1,4 @@
 [User]
-Session=org.gnome.Kiosk.SearchApp.Session
+Session=weston
+# org.gnome.Kiosk.SearchApp.Session
 SystemAccount=true
