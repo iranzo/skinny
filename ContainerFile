@@ -2,7 +2,7 @@
 
 FROM registry.redhat.io/rhel9/rhel-bootc:latest
 
-ARG EXTRA_RPM_PACKAGES='pciutils tmux joe bootc ostree openssh-server firefox gnome-kiosk gnome-kiosk-search-appliance gdm xorg-x11-drivers xorg-x11-fonts-75dpi xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-xinit xorg-x11-xinit-session xorg-x11-server-Xwayland weston' # cloud-init
+ARG EXTRA_RPM_PACKAGES='pciutils tmux joe bootc ostree openssh-server firefox gnome-kiosk gnome-kiosk-search-appliance gdm xorg-x11-drivers xorg-x11-fonts-75dpi xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-xinit xorg-x11-xinit-session xorg-x11-server-Xwayland weston dillo' # cloud-init
 ARG REMOVE_RPM_PACKAGES='adcli avahi-libs flashrom flatpak* fwupd gdisk libsmbclient libudisks2 nano ncurses netavark nfs-utils pipewire rpcbind samba-client-libs samba-common-libs sg3_utils skopeo sos sssd-ad sssd-common sssd-common-pac sssd-ipa sssd-krb5 sssd-krb5-common sssd-ldap sssd-nfs-idmap toolbox tracker tracker-miners udisks2 WALinuxAgent-udev wireplumber zstd polkit a*firmware* biosdevname dracut-config-rescue i*firmware* lib*firmware* NetworkManager-team NetworkManager-tui parted plymouth rhc* sqlite sssd*  audit authselect*  firewalld  kexec-tools langpacks-* man-db polkit  trousers tuned'
 # xorg-x11-server-Xwayland
 # bsdtar nss-altfiles efi-filesystem aardvark-dns c-ares cryptsetup criu crun lvm2 lvm2-libs  containers-common  rpm-ostree fuse gmp conmon efibootmgr efivar-libs libverto ima-evm-utils passt passt-selinux'
@@ -51,6 +51,9 @@ RUN grep -q /usr/lib/containers/storage /etc/containers/storage.conf || \
   sed -i -e '/additionalimage.*/a "/usr/lib/containers/storage",' \
   /etc/containers/storage.conf
 
+# Add psmem https://github.com/pixelb/ps_mem/blob/master/ps_mem.py to check RAM usage
+RUN wget -O /usr/bin/ps_mem https://raw.githubusercontent.com/pixelb/ps_mem/refs/heads/master/ps_mem.py  && \
+  chmod +x /usr/bin/ps_mem
 
 
 # Added for running as an OCI Container to prevent Overlay on Overlay issues.
