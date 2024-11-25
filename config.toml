@@ -77,8 +77,6 @@ fi
 
 #end raw
 %end
-"""
-
 
 %post --log=/root/ks-post-services.log --interpreter=/bin/bash
 
@@ -88,5 +86,13 @@ for service in   pipewire.service pipewire.socket pipewire-pulse.service pipewir
     systemctl --global mask ${service}
 done
 
-
 %end
+
+%post
+# For setting the image being used for installation for future upgrades, etc
+bootc switch --mutate-in-place --transport registry quay.io/iranzo/skinny:latest
+%end
+
+
+
+"""
