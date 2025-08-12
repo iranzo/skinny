@@ -55,13 +55,13 @@ repos:
       - id: check-byte-order-marker
       - id: check-docstring-first
     repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
   - hooks:
       - id: flake8
     repo: https://github.com/pycqa/flake8
     rev: 7.3.0
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.12.0-1
+    rev: v3.12.0-2
     hooks:
       # Choose one of:
       - id: shfmt # native (requires/installs Go to build)
